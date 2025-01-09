@@ -40,7 +40,7 @@
         outline-offset: 2px;
       }
 
-      &__content{
+      &__content {
         position: relative;
         z-index: 10;
         display: flex;
@@ -57,7 +57,7 @@
           border-radius: 9999px;
           border-width: 1px;
 
-          i{
+          i {
             font-size: 50px;
           }
         }
@@ -86,6 +86,7 @@
     max-width: $normal-container-size;
 
     .container-button-add {
+
       button {
         margin-top: 20px;
       }

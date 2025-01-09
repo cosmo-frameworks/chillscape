@@ -31,7 +31,7 @@ const createWindow = () => {
     },
   });
 
-  /* win.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+  win.webContents.session.webRequest.onHeadersReceived((details, callback) => {
     callback({
       responseHeaders: {
         ...details.responseHeaders,
@@ -41,13 +41,14 @@ const createWindow = () => {
           style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; 
           font-src 'self' https://fonts.gstatic.com https://ka-f.fontawesome.com data:; 
           connect-src 'self' https://api.shakarzr.com http://localhost:4000; 
-          img-src 'self' data:;`,
+          img-src 'self' data:; 
+          media-src 'self' blob: data:;`,
         ],
         "X-Content-Type-Options": ["nosniff"],
         "X-Frame-Options": ["DENY"],
       },
     });
-  }); */
+  });
 
   win.setIcon(path.join(__dirname, "./img/logo/icon.png"));
 

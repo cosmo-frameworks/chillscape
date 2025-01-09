@@ -1,4 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
+import { toast } from "react-toastify";
+
+import { addSoundToDB, getSoundsFromDB, deleteSoundFromDB } from "../utils/db";
 
 import rainSound from "../assets/sounds/rain.mp3";
 import ambianceSounda from "../assets/sounds/night.mp3";
@@ -8,51 +11,76 @@ import cricket from "../assets/sounds/cricket.mp3";
 
 const SoundContext = createContext();
 
+const defaultSounds = [
+  { id: "1", sound: rainSound, title: "Rain" },
+  { id: "2", sound: ambianceSounda, title: "Night ambiance" },
+  { id: "3", sound: streetSound, title: "Street ambiance" },
+  { id: "4", sound: fireplace, title: "Fireplace" },
+  { id: "5", sound: cricket, title: "Crickets" },
+];
+
 const SoundProvider = ({ children }) => {
-  const defaultSounds = [
-    { id: "1", sound: streetSound, title: "Street ambiance" },
-    { id: "2", sound: ambianceSounda, title: "Night ambiance" },
-    { id: "3", sound: rainSound, title: "Rain" },
-    { id: "4", sound: fireplace, title: "Fireplace" },
-    { id: "5", sound: cricket, title: "Crickets" },
-  ];
+  const [sounds, setSounds] = useState([]);
 
-  const loadSounds = () => {
-    const savedSounds = localStorage.getItem("sounds");
-    return savedSounds ? JSON.parse(savedSounds) : defaultSounds;
-  };
+  // Cargar sonidos desde IndexedDB o añadir sonidos por defecto
+  useEffect(() => {
+    const initializeSounds = async () => {
+      const storedSounds = await getSoundsFromDB();
 
-  const [sounds, setSounds] = useState(loadSounds);
+      if (storedSounds.length === 0) {
+        // Si la base de datos está vacía, agrega los sonidos por defecto
+        for (const sound of defaultSounds) {
+          await addSoundToDB(sound);
+        }
+        setSounds(defaultSounds);
+      } else {
+        setSounds(storedSounds);
+      }
+    };
 
-  const addSound = (file, title) => {
+    initializeSounds();
+  }, []);
+
+  // Añadir un nuevo sonido
+  const addSound = async (file, title) => {
     const validTypes = ["audio/mpeg"];
 
     if (!validTypes.includes(file.type)) {
       return alert("Seleccione un archivo válido de MP3.");
     }
 
-    const newSound = {
-      id: Date.now().toString(),
-      sound: URL.createObjectURL(file),
-      title,
-    };
+    const fileToBase64 = (file) =>
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+        reader.readAsDataURL(file);
+      });
 
-    const updatedSounds = [...sounds, newSound];
-    setSounds(updatedSounds);
-    localStorage.setItem("sounds", JSON.stringify(updatedSounds));
+    try {
+      const base64Sound = await fileToBase64(file);
+      const newSound = {
+        id: Date.now().toString(),
+        sound: base64Sound,
+        title,
+      };
+
+      await addSoundToDB(newSound);
+      setSounds((prevSounds) => [...prevSounds, newSound]);
+    } catch (error) {
+      toast.error("Error al añadir el archivo de sonido.");
+    }
   };
 
-  const deleteSound = (id) => {
-    const updatedSounds = sounds.filter((sound) => sound.id !== id);
-    setSounds(updatedSounds);
-    localStorage.setItem("sounds", JSON.stringify(updatedSounds));
+  // Eliminar un sonido
+  const deleteSound = async (id) => {
+    try {
+      await deleteSoundFromDB(id);
+      setSounds((prevSounds) => prevSounds.filter((sound) => sound.id !== id));
+    } catch (error) {
+      toast.error("Error al eliminar el sonido.");
+    }
   };
-
-  useEffect(() => {
-    return () => {
-      sounds.forEach((sound) => URL.revokeObjectURL(sound.sound));
-    };
-  }, [sounds]);
 
   return (
     <SoundContext.Provider value={{ sounds, addSound, deleteSound }}>

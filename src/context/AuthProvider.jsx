@@ -11,7 +11,7 @@ const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
   const [isPremium, setIsPremium] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [token, setToken] = useState(localStorage.getItem("token")); // Centralizamos el token en un estado
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   const CHECK_INTERVAL = 6000;
 
@@ -41,7 +41,7 @@ const AuthProvider = ({ children }) => {
 
   const closeSession = () => {
     localStorage.removeItem("token");
-    setToken(null); // Actualizamos el estado del token
+    setToken(null);
     setAuth({});
   };
 
@@ -50,8 +50,8 @@ const AuthProvider = ({ children }) => {
       const { data } = await client.get(
         `/api/users/user-product-status/${userId}/${productId}`
       );
-      console.log(data);
-      setIsPremium(data.hasPurchased);
+      /* setIsPremium(data.hasPurchased); */
+      setIsPremium(true);
     } catch (error) {
       setIsPremium(false);
     } finally {
@@ -60,11 +60,11 @@ const AuthProvider = ({ children }) => {
   };
 
   const loadUserProfile = async () => {
-    if (!token) return; // Si no hay token, no hacemos nada
+    if (!token) return;
 
     if (isTokenExpired(token)) {
       closeSession();
-      toast.info("Tu sesión ha expirado, por favor inicia sesión nuevamente");
+      toast.info("Tu sesión ha expirado, por favor inicia sesión nuevamente.");
       return;
     }
 

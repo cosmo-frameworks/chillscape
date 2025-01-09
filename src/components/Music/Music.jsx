@@ -1,23 +1,69 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { Icon } from "semantic-ui-react";
 
 import { PrimaryButton } from "../PrimaryButton";
 
 import useSound from "../../hooks/useSound";
+import useAuth from "../../hooks/useAuth";
 
 import "./music.scss";
-import { Icon } from "semantic-ui-react";
 
 export const Music = () => {
-  const { addSound } = useSound();
+  const { addSound, sounds } = useSound();
+  const { isPremium } = useAuth();
 
   const [inputValue, setInputValue] = useState("");
   const [file, setFile] = useState(null);
 
-  const handleInput = () => {
-    const fileInput = document.getElementById("soundFile");
-    setFile(fileInput.files[0]);
-    fileInput.value = "";
+  const handleInput = (e) => {
+    const selectedFile = e.target.files[0];
+
+    if (selectedFile && selectedFile.type !== "audio/mpeg") {
+      toast.error("Solo se permiten archivos MP3.");
+      setFile(null);
+    } else {
+      setFile(selectedFile);
+    }
+
+    e.target.value = "";
+  };
+
+  const validations = () => {
+    if (!file) {
+      toast.warn("Selecciona un archivo de sonido.");
+      return false;
+    }
+
+    if (!inputValue.trim()) {
+      toast.warn("Introduce un título para el sonido.");
+      return false;
+    }
+
+    if (sounds.length === 7 && !isPremium) {
+      toast.info(
+        "Has alcanzado el máximo de sonidos permitidos en la versión gratis."
+      );
+      setInputValue("");
+      setFile(null);
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleAddSound = async () => {
+    if (!validations()) return;
+
+    try {
+      await addSound(file, inputValue);
+      toast.success("Sonido añadido correctamente.");
+      setInputValue("");
+      setFile(null);
+    } catch (error) {
+      console.error("Error al añadir el sonido:", error);
+      toast.error("Ocurrió un error al añadir el sonido.");
+    }
   };
 
   return (
@@ -48,7 +94,7 @@ export const Music = () => {
             </span>
             {file === null ? (
               <p className="paragraph-def">
-                Has click para seleccionar un archivo
+                Haz clic para seleccionar un archivo
               </p>
             ) : (
               <p className="paragraph-def">
@@ -69,24 +115,7 @@ export const Music = () => {
           onChange={(e) => setInputValue(e.target.value)}
         />
         <div className="container-button-add">
-          <PrimaryButton
-            action={() => {
-              if (!file) {
-                toast.warn("Selecciona un archivo de sonido.");
-                return;
-              }
-
-              if (!inputValue.trim()) {
-                toast.warn("Introduce un título para el sonido.");
-                return;
-              }
-
-              addSound(file, inputValue);
-              setInputValue("");
-              setFile(null);
-            }}
-            text="Añadir"
-          />
+          <PrimaryButton action={handleAddSound} text="Añadir" />
         </div>
       </div>
     </div>

@@ -34,7 +34,7 @@
         font-size: 17px;
       }
 
-      .delete-button{
+      .delete-button {
         margin-top: 5px;
       }
 
@@ -67,6 +67,62 @@
         height: 5px;
       }
     }
+
+    &__timer {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      position: relative; 
+
+      input {
+        margin: auto;
+        width: 60%;
+        height: 40px;
+        border: 0px solid #343539;
+        background: #1d1e22;
+        transition: 200ms;
+        text-align: center;
+        color: $white;
+        padding-right: 50px;
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      button {
+        position: absolute; 
+        right: 20% ;
+        top: 5px;
+        height: 30px;
+        width: 30px;
+        border: none;
+        color: $white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 50%;
+
+        &:disabled {
+          cursor: not-allowed;
+          opacity: 0.5;
+        }
+      }
+    }
+
+    &__premium-buttons {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      button {
+        color: $white;
+      }
+    }
   }
 }
 
@@ -85,4 +141,10 @@ button {
     font-size: 14px;
     color: azure;
   }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

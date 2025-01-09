@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { PrimaryButton } from "../PrimaryButton/PrimaryButton";
 
 import useAuth from "../../hooks/useAuth";
@@ -8,7 +6,6 @@ import "./buy.scss";
 
 export const Buy = () => {
   const { auth } = useAuth();
-  const [app, setApp] = useState({});
 
   const handlePurchase = (productId) => {
     window.electronAPI.purchaseApp(productId, auth._id, auth.email);

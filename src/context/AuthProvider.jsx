@@ -50,8 +50,7 @@ const AuthProvider = ({ children }) => {
       const { data } = await client.get(
         `/api/users/user-product-status/${userId}/${productId}`
       );
-      /* setIsPremium(data.hasPurchased); */
-      setIsPremium(true);
+      setIsPremium(data.hasPurchased);
     } catch (error) {
       setIsPremium(false);
     } finally {

@@ -14,14 +14,3 @@
 </p>
 
 https://github.com/user-attachments/assets/83e7f727-79bc-4956-adb1-cf32684ce2b4
-
-## Last version available
-
-🚀[v1.1.0](https://github.com/cosmo-frameworks/chillscape/releases/download/v1.1.0/chill-a-day.exe)
-
-## Report a bug
-🐛[create a new issue](https://github.com/cosmo-frameworks/chillscape/issues/new)
-
-## Deploy in local
-
-First run **``yarn``** and this will install the necessary packages, then run **``yarn electron-dev``** to run the application in developer mode (**make sure that port 3000 is not in use**). If you want to compile the app run **``yarn electron-pack``** and this will create a folder called **dist** where the installation **.exe** is located.

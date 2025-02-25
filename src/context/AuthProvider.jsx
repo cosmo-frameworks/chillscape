@@ -46,6 +46,10 @@ const AuthProvider = ({ children }) => {
   };
 
   const userIsPremium = async (userId, productId) => {
+    if (userId === undefined) {
+      return;
+    }
+
     try {
       const { data } = await client.get(
         `/api/users/user-product-status/${userId}/${productId}`
@@ -107,6 +111,7 @@ const AuthProvider = ({ children }) => {
         setIsPremium,
         closeSession,
         updateToken,
+        userIsPremium,
       }}
     >
       {children}

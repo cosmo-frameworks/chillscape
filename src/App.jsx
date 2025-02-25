@@ -4,9 +4,27 @@ import { About, Auth, Controls, Banner, Music, Footer } from "./components";
 import useAuth from "./hooks/useAuth";
 
 import "./app.scss";
+import { useEffect, useState } from "react";
+import { BackendClient } from "./utils/backendClient";
 
 const App = () => {
-  const { auth, loading } = useAuth();
+  const client = new BackendClient();
+
+  const { auth, loading, userIsPremium } = useAuth();
+
+  const [purchased, setPurchased] = useState(false);
+
+  const userId = auth._id;
+  const productId = "6756208565c78e46864e6d0a";
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      userIsPremium(userId, productId);
+    }, 5000);
+
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, productId]);
 
   if (loading) return <p>cargando...</p>;
 

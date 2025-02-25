@@ -15,7 +15,7 @@ export const Banner = () => {
   return (
     <div className="container-banner">
       <div className="container-banner__content">
-        <a href="https://github.com/cosmo-frameworks">
+        <a href="https://cosmoframeworks.shakarzr.com">
           <div>
             <style>
               {`

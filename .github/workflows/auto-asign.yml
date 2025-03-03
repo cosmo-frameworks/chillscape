@@ -1,22 +1,67 @@
-name: Assign Issue to Team Member
+name: Manage New Issue
+
 on:
   issues:
     types: [opened]
 
 jobs:
-  assign:
+  manage_issue:
     runs-on: ubuntu-latest
     steps:
-      - name: Assign issue manually
+      - name: Asignar Issue a un Miembro
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const assignees = ["shakarr"]; // Cambia con los usuarios reales
+            const assignees = ["shakarr"]; // Cambia esto por los miembros de tu equipo
             const assignee = assignees[Math.floor(Math.random() * assignees.length)];
-            github.rest.issues.addAssignees({
+            
+            await github.rest.issues.addAssignees({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.payload.issue.number,
               assignees: [assignee]
             });
+
+      - name: Asignar Label según el Título del Issue
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issueTitle = context.payload.issue.title.toLowerCase();
+            let label = "Task"; // Valor por defecto
+
+            if (issueTitle.includes("bug")) {
+              label = "Bug";
+            } else if (issueTitle.includes("feature")) {
+              label = "Feature";
+            }
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              labels: [label]
+            });
+
+      - name: Crear una Rama con el Issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_NUMBER=${{ github.event.issue.number }}
+          ISSUE_TITLE="${{ github.event.issue.title }}"
+          BRANCH_NAME="issue-${ISSUE_NUMBER}-$(echo "$ISSUE_TITLE" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')"
+
+          echo "Creando la rama: $BRANCH_NAME"
+
+          # Clonar el repositorio
+          git clone https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git repo
+          cd repo
+
+          # Configurar git
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+          # Crear y subir la rama
+          git checkout -b "$BRANCH_NAME"
+          git push origin "$BRANCH_NAME"

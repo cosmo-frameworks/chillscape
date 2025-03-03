@@ -1,6 +1,6 @@
 .container {
   display: grid;
-  grid-template-columns: 1fr 1.1fr 0.9fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 0.4fr 2.4fr 0.2fr;
   gap: 0px 0px;
   grid-auto-flow: row;
@@ -13,10 +13,6 @@
 .spotify_section {
   grid-area: spotify_section;
   height: 585.5px;
-}
-
-.coffie_section {
-  grid-area: coffie_section;
 }
 
 .banner_section {

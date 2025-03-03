@@ -151,7 +151,7 @@ export const Controls = () => {
         {sounds
           .sort((a, b) => a.title.localeCompare(b.title))
           .map((sound) => (
-            <div key={sound.id}>
+            <div className="container-controls__sounds__item" key={sound.id}>
               <div className="container-controls__content__title">
                 <button onClick={() => toggleIndividualPlay(sound.id)}>
                   {playingStates[sound.id] ? (
@@ -171,12 +171,14 @@ export const Controls = () => {
                   className="range"
                   onChange={(e) => handleVolumeChange(sound.id, e.target.value)}
                 />
-                <button
-                  onClick={() => deleteSound(sound.id)}
-                  className="delete-button"
-                >
-                  <Icon name="trash" />
-                </button>
+                {sound.canRemove && (
+                  <button
+                    onClick={() => deleteSound(sound.id)}
+                    className="delete-button"
+                  >
+                    <Icon name="trash" />
+                  </button>
+                )}
               </div>
               <br />
             </div>

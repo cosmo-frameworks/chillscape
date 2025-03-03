@@ -4,11 +4,13 @@
   display: flex;
   width: 100%;
   flex-direction: column;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
   padding: 5px;
 
   &__content {
     width: 95%;
-    background-color: blue;
 
     &__title {
       display: inline-flex;
@@ -21,6 +23,11 @@
         font-family: "Telma-Variable";
         font-size: $standar-font-size;
         letter-spacing: 1.2px;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 130px;
       }
     }
 
@@ -74,7 +81,7 @@
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      position: relative; 
+      position: relative;
 
       input {
         margin: auto;
@@ -93,8 +100,8 @@
       }
 
       button {
-        position: absolute; 
-        right: 20% ;
+        position: absolute;
+        right: 20%;
         top: 5px;
         height: 30px;
         width: 30px;
@@ -125,12 +132,20 @@
     }
   }
 
-  &__sounds{
+  &__sounds {
     width: 100%;
     display: flex;
+    max-height: 400px;
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    margin-bottom: 15px;
+    align-items: flex-start;
+    gap: 10px;
+
+    &__item {
+      margin-bottom: 5px;
+      height: 50px;
+    }
   }
 }
 

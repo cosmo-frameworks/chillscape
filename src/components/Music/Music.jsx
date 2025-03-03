@@ -49,7 +49,7 @@ export const Music = () => {
       return false;
     }
 
-    if (sounds.length === 14) {
+    if (sounds.length === 12) {
       toast.info(
         "Has alcanzado el máximo de sonidos permitidos."
       );

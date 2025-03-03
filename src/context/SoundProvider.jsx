@@ -12,11 +12,11 @@ import cricket from "../assets/sounds/cricket.mp3";
 const SoundContext = createContext();
 
 const defaultSounds = [
-  { id: "1", sound: rainSound, title: "Rain" },
-  { id: "2", sound: ambianceSounda, title: "Night ambiance" },
-  { id: "3", sound: streetSound, title: "Street ambiance" },
-  { id: "4", sound: fireplace, title: "Fireplace" },
-  { id: "5", sound: cricket, title: "Crickets" },
+  { id: "1", sound: rainSound, title: "Rain", canRemove: false },
+  { id: "2", sound: ambianceSounda, title: "Night ambiance", canRemove: false },
+  { id: "3", sound: streetSound, title: "Street ambiance", canRemove: false },
+  { id: "4", sound: fireplace, title: "Fireplace", canRemove: false },
+  { id: "5", sound: cricket, title: "Crickets", canRemove: false },
 ];
 
 const SoundProvider = ({ children }) => {
@@ -63,6 +63,7 @@ const SoundProvider = ({ children }) => {
         id: Date.now().toString(),
         sound: base64Sound,
         title,
+        canRemove: true,
       };
 
       await addSoundToDB(newSound);

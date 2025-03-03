@@ -147,37 +147,41 @@ export const Controls = () => {
           </div>
         </>
       )}
-      {sounds.map((sound) => (
-        <div key={sound.id}>
-          <div className="container-controls__content__title">
-            <button onClick={() => toggleIndividualPlay(sound.id)}>
-              {playingStates[sound.id] ? (
-                <Icon name="pause" />
-              ) : (
-                <Icon name="play" />
-              )}
-            </button>
-            <p>{sound.title}</p>
-          </div>
-          <div className="container-controls__content__audio">
-            <input
-              type="range"
-              min={0}
-              max={100}
-              defaultValue={50}
-              className="range"
-              onChange={(e) => handleVolumeChange(sound.id, e.target.value)}
-            />
-            <button
-              onClick={() => deleteSound(sound.id)}
-              className="delete-button"
-            >
-              <Icon name="trash" />
-            </button>
-          </div>
-          <br />
-        </div>
-      ))}
+      <div className="container-controls__sounds">
+        {sounds
+          .sort((a, b) => a.title.localeCompare(b.title))
+          .map((sound) => (
+            <div key={sound.id}>
+              <div className="container-controls__content__title">
+                <button onClick={() => toggleIndividualPlay(sound.id)}>
+                  {playingStates[sound.id] ? (
+                    <Icon name="pause" />
+                  ) : (
+                    <Icon name="play" />
+                  )}
+                </button>
+                <p>{sound.title}</p>
+              </div>
+              <div className="container-controls__content__audio">
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  defaultValue={50}
+                  className="range"
+                  onChange={(e) => handleVolumeChange(sound.id, e.target.value)}
+                />
+                <button
+                  onClick={() => deleteSound(sound.id)}
+                  className="delete-button"
+                >
+                  <Icon name="trash" />
+                </button>
+              </div>
+              <br />
+            </div>
+          ))}
+      </div>
     </div>
   );
 };

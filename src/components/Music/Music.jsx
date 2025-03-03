@@ -49,6 +49,15 @@ export const Music = () => {
       return false;
     }
 
+    if (sounds.length === 14) {
+      toast.info(
+        "Has alcanzado el máximo de sonidos permitidos."
+      );
+      setInputValue("");
+      setFile(null);
+      return false;
+    }
+
     return true;
   };
 

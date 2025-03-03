@@ -124,6 +124,14 @@
       }
     }
   }
+
+  &__sounds{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
 }
 
 button {

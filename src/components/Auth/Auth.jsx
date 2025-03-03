@@ -4,6 +4,7 @@ import { LoginForm } from "../LoginForm";
 import { AuthOptions } from "../AuthOptions";
 import { RegisterForm } from "../RegisterForm/RegisterForm";
 
+import video from "../../assets/videos/background.mp4";
 import "./auth.scss";
 
 export const Auth = () => {
@@ -27,6 +28,14 @@ export const Auth = () => {
 
   return (
     <div className="auth">
+      <video
+        className="auth__video"
+        src={video}
+        autoPlay
+        loop
+        muted
+        playsInline
+      ></video>
       <div className="auth__content">{renderForm()}</div>
     </div>
   );
